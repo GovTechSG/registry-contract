@@ -9,6 +9,8 @@ contract Registry {
     struct Registration {
         address owner;
         bytes32 subject;
+        uint256 blockNumber;
+        uint256 blockTimestamp;
         bytes32 meta;
     }
 
@@ -59,6 +61,8 @@ contract Registry {
         registrations[hashed] = Registration({
             owner: msg.sender,
             subject: hashed,
+            blockNumber: block.number,
+            blockTimestamp: block.timestamp,
             meta: 0
         });
 
