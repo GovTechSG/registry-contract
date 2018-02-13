@@ -14,7 +14,7 @@ contract Registry {
 
     struct User {
         address account;
-        // Registration[] ownedRegistrations;
+        bytes32[] ownedRegistrations;
     }
 
     enum AdminType { System }
@@ -46,8 +46,10 @@ contract Registry {
     enum Response { Ok, Error }
 
     function signup() public payable userExistsNot returns (Response, string) {
-        // Registration[] storage _owned = new [];
-        users[msg.sender] = User({ account: msg.sender });
+        users[msg.sender] = User({
+            account: msg.sender,
+            ownedRegistrations: new bytes32[](0)
+        });
         CreatedUser(msg.sender);
     }
 
@@ -59,6 +61,9 @@ contract Registry {
             subject: hashed,
             meta: 0
         });
+
+        User storage owner = users[msg.sender];
+        owner.ownedRegistrations.push(hashed);
 
         Registered(msg.sender, hashed);
         return (Response.Ok, hashed);
