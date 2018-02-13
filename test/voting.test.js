@@ -1,10 +1,10 @@
-const Voting = artifacts.require("Ballot");
+const Registry = artifacts.require("Registry");
 
-contract("Voting", accounts => {
+contract("Registry", accounts => {
   it("should work", () =>
-    Voting.deployed()
-      .then(instance => instance.chairperson.call())
-      .then(addr => {
-        assert.equal(addr, accounts[0]);
+    Registry.deployed()
+      .then(instance => instance.getFee())
+      .then(fee => {
+        assert.equal(fee, 0);
       }));
 });

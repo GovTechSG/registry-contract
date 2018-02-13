@@ -1,8 +1,6 @@
-# truffle-dev-ci
+# registry-contract
 
-[![Build Status](https://travis-ci.org/gyng/truffle-dev-ci.svg?branch=master)](https://travis-ci.org/gyng/truffle-dev-ci)
-
-Repository for Truffle with testing, linting, and a Travis CI configuration set up.
+Simple registration contract to store hashes on an Ethereum network.
 
 ## Testing
 
