@@ -1,3 +1,5 @@
+const assertRevert = require("./helpers/assertRevert").default;
+
 const Registry = artifacts.require("Registry");
 
 const empty = "0x0000000000000000000000000000000000000000";
@@ -48,6 +50,16 @@ contract("Registry", accounts => {
 
       assert.equal(retrievedSomething[1], accounts[0]);
       assert.equal(retrievedSomething[2], subjectHash);
+    });
+
+    it("forbids duplicate registrations", async () => {
+      const registry = await Registry.new(0);
+      await registry.signup();
+
+      const subject = "highlander";
+
+      await registry.register(subject, { value: 10 });
+      assertRevert(registry.register(subject, { value: 10 }));
     });
   });
 });

@@ -12,3 +12,4 @@ before_install:
 
 script:
   - docker-compose exec truffle yarn run test:docker
+  - docker-compose exec truffle yarn run lint

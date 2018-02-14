@@ -11,7 +11,8 @@
     "artifacts": false,
     "contract": false,
     "assert": false,
-    "web3": false
+    "web3": false,
+    "assertRevert": false
   },
 
   "rules": {

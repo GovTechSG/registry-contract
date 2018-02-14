@@ -1,5 +1,6 @@
 pragma solidity ^0.4.15;
 
+
 contract Registry {
     event Registered(address owner, bytes32 subject);
     event CreatedAdmin(address admin);
@@ -48,6 +49,7 @@ contract Registry {
     enum Response { Ok, Error }
 
     function signup() public payable userExistsNot returns (Response, string) {
+        // TODO: implement some form of account transfer/recovery
         users[msg.sender] = User({
             account: msg.sender,
             ownedRegistrations: new bytes32[](0)
@@ -55,14 +57,18 @@ contract Registry {
         CreatedUser(msg.sender);
     }
 
-    function register(bytes32 subject) public payable userExists enoughFee returns (Response, bytes32) {
-        bytes32 hashed = keccak256(subject);
+    // function transfer(bytes32 subject, address account) public returns (Response, string) {
+    //     throw;
+    // }
+
+    function register(bytes32 subject) public payable userExists notRegistered(subject) enoughFee returns (Response, bytes32) {
+        bytes32 hashed = getHash(subject);
 
         registrations[hashed] = Registration({
             owner: msg.sender,
             subject: hashed,
             blockNumber: block.number,
-            blockTimestamp: block.timestamp,
+            blockTimestamp: block.timestamp, // solium-disable-line
             meta: 0
         });
 
@@ -74,7 +80,7 @@ contract Registry {
     }
 
     function retrieve(bytes32 subject) public view returns (Response, address, bytes32) {
-        bytes32 hashed = keccak256(subject);
+        bytes32 hashed = getHash(subject);
         Registration memory registration = registrations[hashed];
         // require(registration.owner != 0);
 
@@ -83,6 +89,18 @@ contract Registry {
         }
 
         return (Response.Ok, registration.owner, registration.subject);
+    }
+
+    function getHash(bytes32 subject) public pure returns (bytes32) {
+        // Can't be easily changed
+        return keccak256(subject);
+    }
+
+    modifier notRegistered(bytes32 subject) {
+        bytes32 hashed = getHash(subject);
+        Registration memory registration = registrations[hashed];
+        require(registration.owner == 0);
+        _;
     }
 
     modifier enoughFee {
