@@ -20,22 +20,9 @@ contract("Registry", accounts => {
     });
   });
 
-  describe("users", async () => {
-    it("signs a user up", async () => {
-      const registry = await Registry.new(0);
-      const sender = accounts[1];
-      assert.equal(await registry.users(sender), empty);
-
-      await registry.signup.sendTransaction({ from: sender });
-
-      assert.equal(await registry.users(sender), sender);
-    });
-  });
-
   describe("registration", async () => {
     it("registers an retrieves a subject", async () => {
       const registry = await Registry.new(0);
-      await registry.signup();
       const subject = "foobar";
       const retrievedEmpty = await registry.retrieve(subject);
       assert.equal(retrievedEmpty[1], empty);
@@ -54,7 +41,6 @@ contract("Registry", accounts => {
 
     it("forbids duplicate registrations", async () => {
       const registry = await Registry.new(0);
-      await registry.signup();
 
       const subject = "highlander";
 

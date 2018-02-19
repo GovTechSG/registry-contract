@@ -4,7 +4,6 @@ pragma solidity ^0.4.15;
 contract Registry {
     event Registered(address owner, bytes32 subject);
     event CreatedAdmin(address admin);
-    event CreatedUser(address user);
     event Error(string message);
 
     struct Registration {
@@ -15,11 +14,6 @@ contract Registry {
         bytes32 meta;
     }
 
-    struct User {
-        address account;
-        bytes32[] ownedRegistrations;
-    }
-
     enum AdminType { System }
 
     struct Admin {
@@ -28,7 +22,6 @@ contract Registry {
     }
 
     mapping(bytes32 => Registration) public registrations;
-    mapping(address => User) public users;
     mapping(address => Admin) public admins;
 
     uint _fee = 0;
@@ -48,20 +41,11 @@ contract Registry {
 
     enum Response { Ok, Error }
 
-    function signup() public payable userExistsNot returns (Response, string) {
-        // TODO: implement some form of account transfer/recovery
-        users[msg.sender] = User({
-            account: msg.sender,
-            ownedRegistrations: new bytes32[](0)
-        });
-        CreatedUser(msg.sender);
-    }
-
     // function transfer(bytes32 subject, address account) public returns (Response, string) {
     //     throw;
     // }
 
-    function register(bytes32 subject) public payable userExists notRegistered(subject) enoughFee returns (Response, bytes32) {
+    function register(bytes32 subject) public payable notRegistered(subject) enoughFee returns (Response, bytes32) {
         bytes32 hashed = getHash(subject);
 
         registrations[hashed] = Registration({
@@ -71,9 +55,6 @@ contract Registry {
             blockTimestamp: block.timestamp, // solium-disable-line
             meta: 0
         });
-
-        User storage owner = users[msg.sender];
-        owner.ownedRegistrations.push(hashed);
 
         Registered(msg.sender, hashed);
         return (Response.Ok, hashed);
@@ -105,16 +86,6 @@ contract Registry {
 
     modifier enoughFee {
         require(msg.value >= this.getFee());
-        _;
-    }
-
-    modifier userExistsNot {
-        require(users[msg.sender].account == 0);
-        _;
-    }
-
-    modifier userExists {
-        require(users[msg.sender].account != 0);
         _;
     }
 }
