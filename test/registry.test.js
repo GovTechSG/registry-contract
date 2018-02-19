@@ -2,7 +2,8 @@ const assertRevert = require("./helpers/assertRevert").default;
 
 const Registry = artifacts.require("Registry");
 
-const empty = "0x0000000000000000000000000000000000000000";
+const empty = "";
+const owner = "did:foo:bar";
 
 contract("Registry", accounts => {
   describe("constructor", () => {
@@ -21,21 +22,23 @@ contract("Registry", accounts => {
   });
 
   describe("registration", async () => {
-    it("registers an retrieves a subject", async () => {
+    it("registers and retrieves a subject", async () => {
       const registry = await Registry.new(0);
       const subject = "foobar";
       const retrievedEmpty = await registry.retrieve(subject);
       assert.equal(retrievedEmpty[1], empty);
 
       // Get hashed subject for testing
-      const receipt = await registry.register.call(subject, { value: 10 });
+      const receipt = await registry.register.call(subject, owner, {
+        value: 10
+      });
       const subjectHash = receipt[1];
       // Commit transaction
-      await registry.register(subject, { value: 10 });
+      await registry.register(subject, owner, { value: 10 });
 
       const retrievedSomething = await registry.retrieve(subject);
 
-      assert.equal(retrievedSomething[1], accounts[0]);
+      assert.equal(retrievedSomething[1], owner);
       assert.equal(retrievedSomething[2], subjectHash);
     });
 
@@ -44,7 +47,7 @@ contract("Registry", accounts => {
 
       const subject = "highlander";
 
-      await registry.register(subject, { value: 10 });
+      await registry.register(subject, owner, { value: 10 });
       assertRevert(registry.register(subject, { value: 10 }));
     });
   });

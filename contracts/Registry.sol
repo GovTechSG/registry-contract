@@ -2,15 +2,13 @@ pragma solidity ^0.4.15;
 
 
 contract Registry {
-    event Registered(address owner, bytes32 subject);
+    event Registered(string owner, bytes32 subject);
     event CreatedAdmin(address admin);
     event Error(string message);
 
     struct Registration {
-        address owner;
+        string owner;
         bytes32 subject;
-        uint256 blockNumber;
-        uint256 blockTimestamp;
         bytes32 meta;
     }
 
@@ -45,28 +43,26 @@ contract Registry {
     //     throw;
     // }
 
-    function register(bytes32 subject) public payable notRegistered(subject) enoughFee returns (Response, bytes32) {
+    function register(bytes32 subject, string owner) public payable notRegistered(subject) enoughFee returns (Response, bytes32) {
         bytes32 hashed = getHash(subject);
 
         registrations[hashed] = Registration({
-            owner: msg.sender,
+            owner: owner,
             subject: hashed,
-            blockNumber: block.number,
-            blockTimestamp: block.timestamp, // solium-disable-line
             meta: 0
         });
 
-        Registered(msg.sender, hashed);
+        Registered(owner, hashed);
         return (Response.Ok, hashed);
     }
 
-    function retrieve(bytes32 subject) public view returns (Response, address, bytes32) {
+    function retrieve(bytes32 subject) public view returns (Response, string, bytes32) {
         bytes32 hashed = getHash(subject);
         Registration memory registration = registrations[hashed];
         // require(registration.owner != 0);
 
-        if (registration.owner == 0x0) {
-            return (Response.Error, 0x0, hashed);
+        if (registration.subject == "") {
+            return (Response.Error, "", hashed);
         }
 
         return (Response.Ok, registration.owner, registration.subject);
@@ -80,7 +76,7 @@ contract Registry {
     modifier notRegistered(bytes32 subject) {
         bytes32 hashed = getHash(subject);
         Registration memory registration = registrations[hashed];
-        require(registration.owner == 0);
+        require(registration.subject == 0);
         _;
     }
 
