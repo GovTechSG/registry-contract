@@ -39,10 +39,6 @@ contract Registry {
 
     enum Response { Ok, Error }
 
-    // function transfer(bytes32 subject, address account) public returns (Response, string) {
-    //     throw;
-    // }
-
     function register(bytes32 subject, string owner) public payable notRegistered(subject) enoughFee returns (Response, bytes32) {
         bytes32 hashed = getHash(subject);
 
@@ -59,7 +55,6 @@ contract Registry {
     function retrieve(bytes32 subject) public view returns (Response, string, bytes32) {
         bytes32 hashed = getHash(subject);
         Registration memory registration = registrations[hashed];
-        // require(registration.owner != 0);
 
         if (registration.subject == "") {
             return (Response.Error, "", hashed);
