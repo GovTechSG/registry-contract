@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "d": "yarn run build -- -w",
-    "lint": "tslint"
+    "lint": "tslint -c tslint.json 'src/**/*.ts'"
   },
   "devDependencies": {
     "@types/socket.io": "^1.4.31",
@@ -22,6 +22,7 @@
     "@types/koa": "^2.0.44",
     "koa": "^2.5.0",
     "koa-body": "^2.5.0",
+    "koa-jwt": "^3.3.0",
     "koa-router": "^7.4.0",
     "socket.io": "^2.0.4",
     "web3": "^1.0.0-beta.30",
