@@ -11,17 +11,17 @@ const router = new Router();
 
 router.get("/", (ctx, next) => {
   ctx.body = `
-    * GET /hash/:hash
-    * POST /hash
-        { hash: string, owner: string }
+    * GET /v1/document/:hash
+    * POST /v1/document
+        { hash: string, userId: string }
   `;
 });
 
-router.post("/hash", jwt, (ctx, next) => {
+router.post("/v1/document", jwt, (ctx, next) => {
   ctx.set("Content-Type", "application/json");
   ctx.set("Access-Control-Allow-Origin", "*");
 
-  if (!ctx.request.body || !ctx.request.body.hash || !ctx.request.body.owner) {
+  if (!ctx.request.body || !ctx.request.body.hash || !ctx.request.body.userId) {
     ctx.status = 400;
     ctx.body = JSON.stringify({
       message:
@@ -32,7 +32,7 @@ router.post("/hash", jwt, (ctx, next) => {
   }
 
   return adapter
-    .register(ctx.request.body.hash, ctx.request.body.owner)
+    .register(ctx.request.body.hash, ctx.request.body.userId)
     .then(res => {
       // tslint:disable-next-line:no-console
       console.log(res);
@@ -58,7 +58,7 @@ router.post("/hash", jwt, (ctx, next) => {
     });
 });
 
-router.get("/hash/:hash", (ctx, next) => {
+router.get("/v1/document/:hash", (ctx, next) => {
   ctx.set("Content-Type", "application/json");
   ctx.set("Access-Control-Allow-Origin", "*");
 
@@ -77,9 +77,9 @@ router.get("/hash/:hash", (ctx, next) => {
       // tslint:disable-next-line:no-console
       console.log(res);
 
-      const [meta, owner, storedHash] = res;
+      const [meta, userId, storedHash] = res;
 
-      if (owner == null || owner === "") {
+      if (userId == null || userId === "") {
         ctx.status = 404;
         ctx.body = JSON.stringify({
           message: "No such hash found",
@@ -93,7 +93,7 @@ router.get("/hash/:hash", (ctx, next) => {
           data: {
             hash: storedHash,
             meta,
-            owner
+            userId
           },
           status: "ok"
         },

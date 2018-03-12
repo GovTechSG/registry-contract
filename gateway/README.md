@@ -36,7 +36,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3O
 
 ## Endpoints
 
-### POST `/hash`
+### POST `/v1/document`
 
 Requires an `Authorization` header.
 
@@ -44,7 +44,7 @@ Requires an `Authorization` header.
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.2YjpwOJwv3SJ32kOeBqki0ee4UardV7SvPehZHW7MXw
 
-{ "hash": "0x...", "owner": "foobar" }
+{ "hash": "0x...", "userId": "foobar" }
 ```
 
 #### Success
@@ -83,10 +83,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3O
 }
 ```
 
-### GET `/hash/:hash:`
+### GET `/v1/document/:hash`
 
 ```
-curl -X GET http://localhost:3000/hash/0x72ba7d8e73fe8eb666ea66babc8116a41bfb10e8
+curl -X GET http://localhost:3000/v1/document/0x72ba7d8e73fe8eb666ea66babc8116a41bfb10e8
 ```
 
 #### Success
@@ -99,7 +99,7 @@ curl -X GET http://localhost:3000/hash/0x72ba7d8e73fe8eb666ea66babc8116a41bfb10e
     "hash":
       "0xe84204c23cee32faa70ccffe2df4e8623cb87a3058bd216342f84373a4ca325d",
     "meta": "0",
-    "owner": "foobar"
+    "userId": "foobar"
   },
   "status": "ok"
 }
