@@ -19,6 +19,7 @@ router.get("/", (ctx, next) => {
 
 router.post("/hash", jwt, (ctx, next) => {
   ctx.set("Content-Type", "application/json");
+  ctx.set("Access-Control-Allow-Origin", "*");
 
   if (!ctx.request.body || !ctx.request.body.hash || !ctx.request.body.owner) {
     ctx.status = 400;
@@ -59,6 +60,7 @@ router.post("/hash", jwt, (ctx, next) => {
 
 router.get("/hash/:hash", (ctx, next) => {
   ctx.set("Content-Type", "application/json");
+  ctx.set("Access-Control-Allow-Origin", "*");
 
   if (!ctx.params.hash) {
     ctx.status = 400;
