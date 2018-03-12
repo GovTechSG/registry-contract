@@ -5,7 +5,10 @@ import { IAdapter } from "../types";
 const json = require("../../../../build/contracts/Registry.json");
 
 export interface IEthAdapterOptions {
+  agent?: string;
   endpoint: string;
+  networkId?: string;
+  contractAddress?: string;
 }
 
 // TODO: get rid of hardcoded agent (where moolah comes from)
@@ -14,6 +17,8 @@ export class EthAdapter implements IAdapter {
   public endpoint: string;
   public web3: Web3.default;
   public agent: string;
+  public networkId: string;
+  public contractAddress: string;
   public contracts: {
     registry: any;
   };
@@ -23,6 +28,9 @@ export class EthAdapter implements IAdapter {
     const provider =
       Web3.givenProvider || new Web3.providers.HttpProvider(this.endpoint);
     this.web3 = new Web3(provider);
+    this.agent = options.agent;
+    this.networkId = options.networkId;
+    this.contractAddress = options.contractAddress;
 
     this.contracts = {
       registry: {}
@@ -31,11 +39,15 @@ export class EthAdapter implements IAdapter {
     const network = json.networks
       ? json.networks[networks[networks.length - 1]]
       : null;
-    const address = network && network.address;
-    this.contracts.registry = new this.web3.eth.Contract(json.abi, address);
+    const address = this.networkId || (network && network.address);
+
+    this.contracts.registry = new this.web3.eth.Contract(
+      json.abi,
+      this.contractAddress || address
+    );
 
     this.web3.eth.getAccounts().then(accounts => {
-      this.agent = accounts[0];
+      this.agent = this.agent || accounts[0];
     });
   }
 
