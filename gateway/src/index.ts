@@ -1,3 +1,4 @@
+import * as cors from "@koa/cors";
 import * as Koa from "koa";
 import * as BodyParser from "koa-body";
 import * as yargs from "yargs";
@@ -29,6 +30,7 @@ const app = new Koa();
 const router = routerMiddleware(args);
 
 app
+  .use(cors())
   .use(BodyParser())
   .use(router.routes())
   .use(router.allowedMethods());

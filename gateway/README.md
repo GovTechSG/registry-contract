@@ -8,6 +8,8 @@ This example gateway needs access to a node with the Registry contract already d
 
 Start the Ethereum network (eg. Parity or Ganache), and make sure the ABI (`Registry.json`) is available at `../build/contracts/Registry.json`.
 
+Expect TypeScript errors with Web3: tsc complains, but it will still work. Web3 has awful type definitions.
+
 ```
 yarn
 
