@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "outDir": "./build/",
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "target": "es5",
+    "typeRoots": ["./node_modules/@types"]
+  },
+  "include": ["./src/**/*"]
+}
