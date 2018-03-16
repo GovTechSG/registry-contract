@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "deploy:docker": "truffle deploy --network docker",
     "eslint:fix": "eslint . --ext .js --fix",
     "eslint": "eslint . --ext .js",
     "lint:fix": "solium:fix && eslint:fix",
@@ -8,7 +9,8 @@
     "solium": "solium -d contracts",
     "test:docker": "truffle test --network docker",
     "test": "truffle test",
-    "truffle": "truffle"
+    "truffle": "truffle",
+    "cli": "yarn truffle exec scripts/cli/index.js"
   },
   "devDependencies": {
     "eslint": "^4.15.0",
@@ -19,5 +21,8 @@
     "prettier": "^1.10.2",
     "solium": "^1.1.2",
     "truffle": "^4.0.4"
+  },
+  "dependencies": {
+    "yargs": "^11.0.0"
   }
 }

@@ -7,12 +7,26 @@ services:
       - "8545:8545"
     networks:
       - ganache
-    command: ganache-cli -h 0.0.0.0 -p 8545 -i 1337
+    command: ganache-cli -h 0.0.0.0 -p 8545 -i 1337 -m "general brass task jacket coach stable labor armed pretty fun venue three"
 
   truffle:
     build:
       context: .
-      dockerfile: ./docker/Dockerfile.truffle
+      dockerfile: ./docker/truffle.dockerfile
+    depends_on:
+      - ganache
+    networks:
+      - ganache
+    command: "tail -f /dev/null"
+
+  gateway:
+    build:
+      context: .
+      dockerfile: ./docker/gateway.dockerfile
+    depends_on:
+      - ganache
+    ports:
+      - "3000:3000"
     networks:
       - ganache
 
