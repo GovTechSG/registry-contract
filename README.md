@@ -2,7 +2,11 @@
 
 [![Build Status](https://travis-ci.org/GovTechSG/registry-contract.svg?branch=master)](https://travis-ci.org/GovTechSG/registry-contract)
 
-Simple registration contract to store hashes on an Ethereum network.
+Proof-of-concept for a simple registration contract to store hashes on an Ethereum network.
+
+See also:
+* [private-network](https://github.com/GovTechSG/private-network/)
+* [registry-application](https://github.com/GovTechSG/registry-application)
 
 ## Testing
 
