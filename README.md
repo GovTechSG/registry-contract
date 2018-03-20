@@ -1,6 +1,6 @@
 # registry-contract
 
-[![Build Status](https://travis-ci.org/Neo-Type/registry-contract.svg?branch=master)](https://travis-ci.org/Neo-Type/registry-contract)
+[![Build Status](https://travis-ci.org/GovTechSG/registry-contract.svg?branch=master)](https://travis-ci.org/GovTechSG/registry-contract)
 
 Simple registration contract to store hashes on an Ethereum network.
 
