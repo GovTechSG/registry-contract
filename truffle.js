@@ -9,6 +9,11 @@ module.exports = {
       host: "ganache",
       port: 8545,
       network_id: "1337"
+    },
+    parity_demo: {
+      host: "10.7.32.156",
+      port: 8545,
+      network_id: "0x4242"
     }
   }
 };
