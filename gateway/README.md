@@ -115,3 +115,7 @@ curl -X GET http://localhost:3000/v1/document/0x72ba7d8e73fe8eb666ea66babc8116a4
   "status": "error"
 }
 ```
+
+## Docker
+
+The Docker image for the gateway is located in the parent directory at (../docker/gateway.dockerfile)[../docker/gateway.dockerfile]. A dockerised version of the gateway can be deployed *from the parent directory* using `docker-compose up gateway`.

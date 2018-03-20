@@ -3,17 +3,21 @@ import * as Router from "koa-router";
 import { EthAdapter } from "../adapters/eth";
 import jwt from "./jwt";
 
-let adapter = new EthAdapter({
-  endpoint: "http://127.0.0.1:8545"
-});
+let adapter: EthAdapter;
 
 const router = new Router();
 
 router.get("/", (ctx, next) => {
   ctx.body = `
-    * GET /v1/document/:hash
-    * POST /v1/document
-        { hash: string, userId: string }
+# Registry Ethereum Gateway
+
+* Registry contract address: ${adapter.contractAddress}
+
+## Methods
+
+* GET /v1/document/:hash
+* POST /v1/document
+  { hash: string, userId: string }
   `;
 });
 
@@ -111,6 +115,10 @@ router.get("/v1/document/:hash", (ctx, next) => {
 export default args => {
   if (args) {
     adapter = new EthAdapter(args);
+  } else {
+    adapter = new EthAdapter({
+      endpoint: "http://127.0.0.1:8545"
+    });
   }
   return router;
 };

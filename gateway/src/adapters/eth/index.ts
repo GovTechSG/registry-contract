@@ -1,8 +1,7 @@
 import * as Web3 from "web3";
 import { IAdapter } from "../types";
 
-// tslint:disable-next-line:no-var-requires
-const json = require("../../../../build/contracts/Registry.json");
+import * as json from "./abi/Registry";
 
 export interface IEthAdapterOptions {
   agent?: string;
@@ -25,6 +24,7 @@ export class EthAdapter implements IAdapter {
 
   constructor(options: IEthAdapterOptions) {
     this.endpoint = options.endpoint;
+
     const provider =
       Web3.givenProvider || new Web3.providers.HttpProvider(this.endpoint);
     this.web3 = new Web3(provider);
@@ -39,12 +39,9 @@ export class EthAdapter implements IAdapter {
     const network = json.networks
       ? json.networks[networks[networks.length - 1]]
       : null;
-    const address = this.networkId || (network && network.address);
+    const address = this.contractAddress || (network && network.address);
 
-    this.contracts.registry = new this.web3.eth.Contract(
-      json.abi,
-      this.contractAddress || address
-    );
+    this.contracts.registry = new this.web3.eth.Contract(json.abi, address);
 
     this.web3.eth.getAccounts().then(accounts => {
       this.agent = this.agent || accounts[0];

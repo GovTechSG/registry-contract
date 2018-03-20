@@ -35,4 +35,8 @@ app
   .use(router.routes())
   .use(router.allowedMethods());
 
+const port = 3000;
 app.listen(3000);
+
+// tslint:disable-next-line:no-console
+console.log(`Running at port ${port}`);

@@ -19,7 +19,19 @@ yarn lint
 
 ## Docker image
 
-Docker image for testing and running on CI.
+Docker image for testing and running on CI. `docker-compose up` starts up
 
-    docker-compose up
-    docker-compose exec truffle yarn run test:docker
+* A ganache-cli instance with port `8545` exposed
+* A long-running truffle container to run truffle scripts in (for testing)
+* A HTTP gateway with port `3000` exposed
+
+```
+docker-compose up
+docker-compose exec truffle yarn run test:docker
+```
+
+## HTTP Gateway
+
+[More details](gateway/README.md)
+
+The HTTP gateway to the underlying Parity network can be found in [gateway](gateway). See [gateway/README.md](gateway/README.md) for more details.
