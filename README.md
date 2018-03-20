@@ -15,9 +15,6 @@ Start a test server, and run the tests
 ```
 ganache-cli
 yarn test
-```
-
-```
 yarn lint
 ```
 
