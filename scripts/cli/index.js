@@ -22,6 +22,19 @@ const handleContract = async argv => {
   }
 };
 
+const handleAccount = async argv => {
+  if (argv.quiet) {
+    clearTruffle();
+  }
+
+  switch (argv.action) {
+    case "getaccount":
+      web3.eth.getAccounts((_, accounts) => { console.log(accounts[0]) }); // eslint-disable-line
+      break;
+    default:
+      break;
+  }
+};
 module.exports = async function generateGenesis(cb) {
   try {
     yargs
@@ -31,12 +44,19 @@ module.exports = async function generateGenesis(cb) {
       .version("0.0.1")
       .command({
         command: "contract <action>",
-        describe:
-          "(multiple) addresses of initial validators, repeat option for multiple",
+        describe: "contract getaddress: get address of deployed contract",
         builder: _yargs => {
           _yargs.choices("action", ["getaddress"]);
         },
         handler: handleContract
+      })
+      .command({
+        command: "account <action>",
+        describe: "account getaccount: get first account",
+        builder: _yargs => {
+          _yargs.choices("action", ["getaccount"]);
+        },
+        handler: handleAccount
       })
       .option("quiet", {
         type: "boolean",

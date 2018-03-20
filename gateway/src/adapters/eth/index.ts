@@ -43,9 +43,11 @@ export class EthAdapter implements IAdapter {
 
     this.contracts.registry = new this.web3.eth.Contract(json.abi, address);
 
-    this.web3.eth.getAccounts().then(accounts => {
-      this.agent = this.agent || accounts[0];
-    });
+    if (!this.agent) {
+      this.web3.eth.getAccounts().then(accounts => {
+        this.agent = this.agent || accounts[0];
+      });
+    }
   }
 
   public register(hash: string, owner: string) {

@@ -25,7 +25,7 @@ const args = yargs
     describe:
       "Address of deployed Registry contract on Ethereum network [default: last in JSON ABI]"
   })
-  .string("_").argv;
+  .string("agent").argv;
 
 const app = new Koa();
 const router = routerMiddleware(args);
