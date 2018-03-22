@@ -14,8 +14,7 @@ RUN yarn install --frozen-lockfile \
     && yarn check --integrity \
     && yarn cache clean
 
-# TSC will error out due to wrong Web3 typedefs
-RUN yarn build; exit 0
+RUN yarn build
 
 WORKDIR /usr/src/app/
 RUN yarn install --frozen-lockfile \

@@ -1,4 +1,5 @@
-export = {
+/* tslint:disable */
+export default {
   "contractName": "Registry",
   "abi": [
     {
